@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Saver Business App</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#000;color:#fff}
+.app{max-width:430px;margin:auto;min-height:100vh;background:#121212;padding-bottom:90px}
+.hero{padding:26px 18px;background:linear-gradient(180deg,#1db954,#121212)}
+.hero h1{margin:0;font-size:30px}.hero p{color:#eaffef;margin:6px 0 0}
+section{display:none}section.active{display:block}
+.card,.promo-card,.tool-tile{background:#181818;border:1px solid #282828;border-radius:22px;margin:14px 18px;padding:16px}
+.card p,.promo-card p,.tool-tile p{color:#b3b3b3;font-size:14px}
+.card h2,.card h3{margin:0 0 8px}
+.small{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:1px}
+.badge{display:inline-block;background:#1db954;color:#000;font-weight:bold;border-radius:20px;padding:6px 12px;font-size:12px}
+input,select,textarea{width:100%;background:#282828;color:white;border:0;border-radius:14px;padding:14px;margin:7px 0 12px;font-size:15px}
+textarea{height:78px;resize:none}
+button{width:100%;border:0;border-radius:25px;background:#1db954;color:#000;font-weight:bold;padding:14px;margin-top:6px}
+button.dark{background:#282828;color:white}button.red{background:#ff5c5c;color:white}
+.grid,.creative-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 18px}
+.stat{background:#181818;border:1px solid #282828;border-radius:18px;padding:16px}
+.stat h2{margin:0;color:#1db954;font-size:26px}.stat p{margin:4px 0 0;color:#b3b3b3;font-size:13px}
+.home-hero,.promo-studio,.growth-hero,.account-cover,.more-hero{margin:14px 18px;padding:22px;border-radius:28px;background:radial-gradient(circle at top right,#1db954,transparent 45%),linear-gradient(135deg,#191414,#181818);border:1px solid #282828}
+.home-hero h2,.promo-studio h2,.growth-hero h2,.more-hero h2{font-size:27px;margin:6px 0}
+.home-hero p,.promo-studio p,.growth-hero p,.more-hero p{color:#d8f5df}
+.glow{box-shadow:0 0 24px rgba(29,185,84,.25)}
+.mini-chart{height:90px;display:flex;gap:8px;align-items:end;margin-top:15px}
+.mini-chart span{flex:1;background:#1db954;border-radius:12px 12px 0 0}
+.quick-actions,.date-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 18px}
+.progress{height:8px;background:#282828;border-radius:20px;overflow:hidden;margin-top:10px}
+.progress span{display:block;height:100%;background:#1db954;width:88%}
+.store-avatar{width:76px;height:76px;border-radius:24px;background:#1db954;color:#000;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:bold;margin-bottom:12px}
+.promo-card{overflow:hidden;padding:0}.promo-card img{width:100%;height:170px;object-fit:cover;display:block}
+.promo-content{padding:16px}.promo-content h3{margin:10px 0 6px;font-size:20px}
+.promo-details{display:grid;gap:6px;margin:12px 0;color:#d6d6d6;font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.row button{font-size:12px;padding:11px}
+.tool-icon{display:inline-flex;width:42px;height:42px;border-radius:14px;background:#1db954;color:#000;align-items:center;justify-content:center;font-weight:bold}
+.more-hero{display:flex;justify-content:space-between;gap:16px;align-items:center}
+.studio-ring{width:68px;height:68px;border-radius:50%;border:3px solid #1db954;display:flex;align-items:center;justify-content:center;color:#1db954;font-weight:bold}
+.suki-pass{margin:14px 18px;padding:18px;border-radius:24px;background:linear-gradient(145deg,#1db954,#0d3d24);color:#000}
+.suki-pass p{color:#102016}
+.stamp-row{display:flex;gap:10px;margin:12px 0}
+.stamp{width:34px;height:34px;border-radius:50%;border:2px solid #000}
+.stamp.active{background:#000}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#000;border-top:1px solid #282828;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 0}
+.nav button{background:transparent;color:#aaa;border-radius:0;font-size:12px;padding:8px 2px}.nav button.active{color:#1db954}
+.success{color:#1db954;font-size:14px}
+
+.subscription-studio{margin:14px 18px;padding:20px;border-radius:28px;background:linear-gradient(145deg,#181818,#101010);border:1px solid #282828}
+.subscription-studio h2{margin:6px 0;font-size:27px}
+.subscription-studio p{color:#b3b3b3;font-size:14px}
+.billing-toggle{display:grid;grid-template-columns:1fr 1fr;background:#282828;border-radius:24px;padding:4px;margin:16px 0}
+.billing-toggle button{margin:0;background:transparent;color:#aaa;padding:11px}
+.billing-toggle button.active{background:#1db954;color:#000}
+.pricing-card{position:relative;background:#202020;border:1px solid #303030;border-radius:24px;padding:16px;margin-top:12px}
+.pro-plan{border-color:#1db954;box-shadow:0 0 24px rgba(29,185,84,.18)}
+.pricing-card h3{margin:6px 0;font-size:22px}
+.pricing-card strong{display:block;color:#1db954;font-size:20px;margin:10px 0}
+.plan-tag{display:inline-block;color:#1db954;font-size:12px;text-transform:uppercase;letter-spacing:1px}
+.recommended{position:absolute;top:14px;right:14px;background:#1db954;color:#000;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:bold}
+.pricing-card ul{padding-left:18px;color:#d6d6d6;font-size:14px;line-height:1.7}
+</style>
+</head>
+
+<body>
+<div class="app">
+<div class="hero"><h1>Student Saver</h1><p>Business app for student promos, ads, loyalty, and growth</p></div>
+
+<div class="card">
+  <div class="small">Business Profile</div>
+  <h2 id="businessDisplay">Campus Cafe</h2>
+  <p id="businessInfo">Food and drinks near university area</p>
+  <span class="badge" id="planBadge">Monthly Pro</span>
+</div>
+
+<section id="home" class="active">
+  <div class="home-hero">
+    <p class="small">Today's Business Pulse</p>
+    <h2>Campus Cafe is trending near students</h2>
+    <p>Your lunch deals are getting strong claim activity this week.</p>
+    <button onclick="simulateActivity()">Refresh Live Stats</button>
+  </div>
+
+  <div class="grid">
+    <div class="stat glow"><h2 id="promoCount">3</h2><p>Active Promos</p></div>
+    <div class="stat"><h2 id="views">850</h2><p>Views</p></div>
+    <div class="stat"><h2 id="claims">215</h2><p>Claims</p></div>
+    <div class="stat"><h2 id="visibility">88%</h2><p>Visibility</p></div>
+  </div>
+
+  <div class="card">
+    <h3>Smart Business Insight</h3>
+    <p id="smartTip">Best posting window: 10 AM - 1 PM. Students claim food promos faster before lunch.</p>
+    <div class="mini-chart">
+      <span style="height:45%"></span><span style="height:70%"></span><span style="height:55%"></span>
+      <span style="height:90%"></span><span style="height:66%"></span><span style="height:78%"></span>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <button onclick="openTab('promos',document.querySelectorAll('.nav button')[2])">Post Promo</button>
+    <button onclick="openTab('growth',document.querySelectorAll('.nav button')[3])">Boost Store</button>
+  </div>
+</section>
+
+<section id="account">
+  <div class="account-cover">
+    <div class="store-avatar" id="storeAvatar">CC</div>
+    <h2 id="accountBusinessDisplay">Campus Cafe</h2>
+    <p id="accountBusinessInfo">Food and drinks near university area</p>
+    <span class="badge">Verified Business</span>
+  </div>
+
+  <div class="card">
+    <h2>Business Profile Setup</h2>
+    <input id="businessName" placeholder="Business name">
+    <input id="ownerName" placeholder="Owner name">
+    <input id="email" type="email" placeholder="Business email">
+    <select id="category">
+      <option>Food and Drinks</option><option>School Supplies</option><option>Printing Services</option>
+      <option>Retail</option><option>Transport</option>
+    </select>
+    <input id="nearestCampus" placeholder="Nearest campus">
+    <input id="storeHours" placeholder="Opening hours, example: 8 AM - 8 PM">
+    <textarea id="storeInfo" placeholder="Short business description"></textarea>
+    <button onclick="saveBusiness()">Save Business Account</button>
+    <p class="success" id="businessMsg"></p>
+  </div>
+</section>
+
+<section id="promos">
+  <div class="promo-studio">
+    <p class="small">Promo Studio</p>
+    <h2>Create student offers that stand out</h2>
+    <p>Build claimable discounts with images, codes, limits, terms, and campus targeting.</p>
+  </div>
+
+  <div class="card">
+    <input id="promoTitle" placeholder="Promo title">
+    <select id="promoCategory">
+      <option>Food and Drinks</option><option>School Supplies</option><option>Printing Services</option>
+      <option>Transport</option><option>Fitness and Wellness</option><option>Retail</option>
+    </select>
+    <select id="discountType">
+      <option>Percentage Discount</option><option>Fixed Amount Discount</option>
+      <option>Buy 1 Take 1</option><option>Free Item Reward</option><option>Bundle Deal</option>
+    </select>
+    <input id="promoDiscount" placeholder="Discount value, example: 20% off">
+    <select id="promoCampus">
+      <option>All Campuses</option><option>National University</option><option>City College</option>
+      <option>State University</option><option>Polytechnic East</option>
+    </select>
+    <div class="date-row"><input id="startDate" type="date"><input id="endDate" type="date"></div>
+    <input id="promoCode" placeholder="Promo code, example: STUDENT20">
+    <input id="claimLimit" type="number" placeholder="Claim limit, example: 100">
+    <input id="promoImage" placeholder="Image URL, example: https://placehold.co/600x400">
+    <textarea id="promoDesc" placeholder="Promo description"></textarea>
+    <textarea id="promoTerms" placeholder="Terms and conditions"></textarea>
+    <button onclick="addDetailedPromo()">Publish Promo</button>
+  </div>
+
+  <div id="promoList"></div>
+</section>
+
+<section id="growth">
+  <div class="growth-hero">
+    <p class="small">Growth Engine</p>
+    <h2>Boost your store around campus</h2>
+    <p>Use ads, recommendations, and location targeting to reach nearby students.</p>
+  </div>
+
+  <div class="creative-grid">
+    <div class="tool-tile"><span class="tool-icon">TOP</span><h3>Top Search</h3><p>Place promos above regular results.</p></div>
+    <div class="tool-tile"><span class="tool-icon">MAP</span><h3>Campus Radius</h3><p>Reach students near selected schools.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>Campaign Builder</h3>
+    <select id="adPlacement"><option>Top Search Placement</option><option>Campus Recommendation</option><option>Category Spotlight</option></select>
+    <input id="budget" type="number" placeholder="Daily ad budget">
+    <select id="campus"><option>National University</option><option>City College</option><option>State University</option></select>
+    <input id="radius" type="number" placeholder="Radius in km">
+    <textarea id="targetMsg" placeholder="Message for nearby students"></textarea>
+    <button onclick="activateAd()">Activate Growth Campaign</button>
+    <p class="success" id="adMsg"></p>
+  </div>
+</section>
+
+<section id="more">
+  <div class="more-hero">
+    <div><div class="small">Business Control Room</div><h2>Growth Studio</h2><p>Manage loyalty, subscriptions, live promo tools, and visibility.</p></div>
+    <span class="studio-ring">PRO</span>
+  </div>
+
+  <div class="suki-pass">
+    <div class="small">Suki Loyalty Pass</div>
+    <h3>Student Rewards Card</h3>
+    <p>Reward repeat student customers with stamps and exclusive perks.</p>
+    <input id="rewardName" placeholder="Reward name, example: Free Iced Coffee">
+    <input id="requiredVisits" type="number" placeholder="Required visits, example: 5">
+    <input id="reward" placeholder="Reward details">
+    <div class="stamp-row"><span class="stamp active"></span><span class="stamp active"></span><span class="stamp active"></span><span class="stamp"></span><span class="stamp"></span></div>
+    <button onclick="saveLoyalty()">Activate Suki Program</button>
+    <p class="success" id="loyaltyMsg"></p>
+  </div>
+
+  <div class="creative-grid">
+    <div class="tool-tile"><span class="tool-icon">AD</span><h3>Boost Mode</h3><p>Push promos higher in search results.</p><button class="dark" onclick="activateAd()">Boost</button></div>
+    <div class="tool-tile"><span class="tool-icon">RT</span><h3>Live Updates</h3><p>Refresh views, claims, visits, and repeat customers.</p><button class="dark" onclick="simulateActivity()">Refresh</button></div>
+  </div>
+
+  <div class="subscription-studio">
+    <div class="small">Subscription Studio</div>
+    <h2>Choose your growth plan</h2>
+    <p>Unlock better promotion tools, student targeting, ads, and business insights.</p>
+
+    <div class="billing-toggle">
+      <button class="active" onclick="setBilling('monthly', this)">Monthly</button>
+      <button onclick="setBilling('yearly', this)">Yearly</button>
+    </div>
+
+    <div class="pricing-card free-plan">
+      <span class="plan-tag">Starter</span>
+      <h3>Free Plan</h3>
+      <p>For new stores testing Student Saver.</p>
+      <strong>PHP 0</strong>
+      <ul>
+        <li>Basic business profile</li>
+        <li>Post up to 2 active promos</li>
+        <li>Basic visibility score</li>
+      </ul>
+      <button class="dark" onclick="selectPlan('Free Plan')">Use Free</button>
+    </div>
+
+    <div class="pricing-card pro-plan">
+      <div class="recommended">Recommended</div>
+      <span class="plan-tag">Growth</span>
+      <h3>Pro Plan</h3>
+      <p>For stores that want more student reach.</p>
+      <strong id="proPrice">PHP 699 / month</strong>
+      <ul>
+        <li>Unlimited promo posting</li>
+        <li>Featured advertisement boost</li>
+        <li>Campus radius targeting</li>
+        <li>Engagement analytics</li>
+      </ul>
+      <button onclick="selectPlan('Monthly Pro')">Choose Pro</button>
+    </div>
+
+    <div class="pricing-card yearly-plan">
+      <span class="plan-tag">Scale</span>
+      <h3>Business Plus</h3>
+      <p>For growing brands with multiple campaigns.</p>
+      <strong id="plusPrice">PHP 1,199 / month</strong>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Priority search placement</li>
+        <li>Loyalty campaign tools</li>
+        <li>Advanced customer reports</li>
+      </ul>
+      <button class="dark" onclick="selectPlan('Business Plus')">Choose Plus</button>
+    </div>
+
+    <p class="success" id="planMsg"></p>
+  </div>
+</section>
+
+<div class="nav">
+  <button class="active" onclick="openTab('home',this)">Home</button>
+  <button onclick="openTab('account',this)">Account</button>
+  <button onclick="openTab('promos',this)">Promos</button>
+  <button onclick="openTab('growth',this)">Growth</button>
+  <button onclick="openTab('more',this)">More</button>
+</div>
+</div>
+
+<script>
+let promoCount=3,views=850,claims=215,visits=120,repeat=48,visibility=88,billingMode="monthly";
+
+let promos=[
+ {title:"Student Lunch Combo",category:"Food",desc:"15% off rice meals and drinks with valid school ID.",code:"LUNCH15",campus:"National University",claims:"85 / 150",img:"https://placehold.co/600x380/1db954/000000?text=Lunch+Combo",active:true},
+ {title:"Milk Tea Study Deal",category:"Drinks",desc:"Buy 1 take 1 every Friday from 2 PM to 6 PM.",code:"STUDYTEA",campus:"All Campuses",claims:"120 / 200",img:"https://placehold.co/600x380/191414/1db954?text=Study+Milk+Tea",active:true},
+ {title:"Printing Discount",category:"Printing",desc:"Get PHP 30 off printing services for school projects and reviewers.",code:"PRINT30",campus:"City College",claims:"42 / 100",img:"https://placehold.co/600x380/282828/ffffff?text=Printing+Discount",active:true}
+];
+
+function openTab(id,btn){
+ document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+}
+
+function updateStats(){
+ document.getElementById("promoCount").innerText=promos.filter(p=>p.active).length;
+ document.getElementById("views").innerText=views;
+ document.getElementById("claims").innerText=claims;
+ document.getElementById("visibility").innerText=visibility+"%";
+}
+
+function renderPromos(){
+ document.getElementById("promoList").innerHTML=promos.map((p,i)=>`
+ <div class="promo-card">
+   <img src="${p.img}" alt="${p.title}">
+   <div class="promo-content">
+     <span class="badge">${p.active ? "Active" : "Paused"}</span>
+     <h3>${p.title}</h3>
+     <p>${p.desc}</p>
+     <div class="promo-details">
+       <span>Category: ${p.category}</span>
+       <span>Code: ${p.code}</span>
+       <span>Campus: ${p.campus}</span>
+       <span>Claims: ${p.claims}</span>
+     </div>
+     <div class="row">
+       <button class="dark" onclick="editPromo(${i})">Edit</button>
+       <button class="dark" onclick="togglePromo(${i})">${p.active ? "Pause" : "Activate"}</button>
+       <button class="red" onclick="removePromo(${i})">Remove</button>
+     </div>
+   </div>
+ </div>`).join("");
+ updateStats();
+}
+
+function saveBusiness(){
+ let name=document.getElementById("businessName").value||"Campus Cafe";
+ let category=document.getElementById("category").value;
+ let info=document.getElementById("storeInfo").value||"Profile updated";
+ let initials=name.split(" ").map(w=>w[0]).join("").substring(0,2).toUpperCase();
+
+ document.getElementById("businessDisplay").innerText=name;
+ document.getElementById("businessInfo").innerText=category+" • "+info;
+ document.getElementById("accountBusinessDisplay").innerText=name;
+ document.getElementById("accountBusinessInfo").innerText=category+" • "+info;
+ document.getElementById("storeAvatar").innerText=initials;
+ document.getElementById("businessMsg").innerText="Business account saved successfully.";
+ visibility=Math.min(100,visibility+4);
+ updateStats();
+}
+
+function addDetailedPromo(){
+ let title=document.getElementById("promoTitle").value;
+ let category=document.getElementById("promoCategory").value;
+ let discount=document.getElementById("promoDiscount").value;
+ let campus=document.getElementById("promoCampus").value;
+ let code=document.getElementById("promoCode").value||"No code required";
+ let limit=document.getElementById("claimLimit").value||"Unlimited";
+ let image=document.getElementById("promoImage").value||"https://placehold.co/600x380/1db954/000000?text=Student+Saver+Promo";
+ let desc=document.getElementById("promoDesc").value;
+
+ if(!title||!discount||!desc){alert("Please enter promo title, discount, and description.");return;}
+
+ promos.unshift({title,category,desc:discount+" - "+desc,code,campus,claims:"0 / "+limit,img:image,active:true});
+ views+=80;claims+=20;visibility=Math.min(100,visibility+5);
+ renderPromos();
+}
+
+function editPromo(i){
+ document.getElementById("promoTitle").value=promos[i].title;
+ document.getElementById("promoDesc").value=promos[i].desc;
+ openTab("promos",document.querySelectorAll(".nav button")[2]);
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function togglePromo(i){promos[i].active=!promos[i].active;renderPromos();}
+function removePromo(i){promos.splice(i,1);renderPromos();}
+
+function activateAd(){
+ visibility=100;views+=100;
+ if(document.getElementById("adMsg")) document.getElementById("adMsg").innerText="Growth campaign activated successfully.";
+ updateStats();
+}
+
+function saveLoyalty(){
+ document.getElementById("loyaltyMsg").innerText="Suki loyalty program activated.";
+ repeat+=12;visibility=Math.min(100,visibility+3);updateStats();
+}
+
+function setBilling(mode,btn){
+ billingMode=mode;
+ document.querySelectorAll(".billing-toggle button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ if(mode==="monthly"){
+   document.getElementById("proPrice").innerText="PHP 699 / month";
+   document.getElementById("plusPrice").innerText="PHP 1,199 / month";
+ }else{
+   document.getElementById("proPrice").innerText="PHP 6,990 / year";
+   document.getElementById("plusPrice").innerText="PHP 11,990 / year";
+ }
+}
+
+function selectPlan(plan){
+ document.getElementById("planBadge").innerText=plan;
+ document.getElementById("planMsg").innerText=plan+" selected with "+billingMode+" billing.";
+}
+
+function simulateActivity(){
+ views+=120;claims+=35;visits+=22;repeat+=9;
+ document.getElementById("smartTip").innerText="Your promo is performing well. Try boosting it near lunch hours.";
+ updateStats();
+}
+
+renderPromos();
+</script>
+</body>
+</html>
+
+
+
+
